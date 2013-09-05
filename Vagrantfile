@@ -5,7 +5,7 @@ Vagrant::Config.run do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "centos-6.4-64"
-  config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20130309.box"
+  config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20130731.box"
 
   # Boot with a GUI so you can see the screen. (Default is headless)
   #config.vm.boot_mode = :gui
@@ -26,21 +26,22 @@ Vagrant::Config.run do |config|
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
   # config.vm.forward_port 80, 8080
-  config.vm.forward_port 5432, 5432
-  config.vm.forward_port 3000, 3000
+  # config.vm.forward_port 5432, 5432
+  # config.vm.forward_port 3000, 3000
 
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
-  config.vm.share_folder "v-www", 	"/www",		"./shared/www", 	:extra => 'dmode=777,fmode=777'
-  config.vm.share_folder "v-logs", 	"/logs",	"./shared/logs",	:extra => 'dmode=777,fmode=777'
+  # config.vm.share_folder "v-www", 	"/www",		"./shared/www", 	:extra => 'dmode=777,fmode=777'
+  # config.vm.share_folder "v-logs", 	"/logs",	"./shared/logs",	:extra => 'dmode=777,fmode=777'
 
   config.vm.provision :puppet,
     :options => ["--fileserverconfig=fileserver.conf"],
     :facter => { "fqdn" => "vagrant.vagrantup.com" }  do |puppet|
        puppet.manifests_path = "manifests"
        puppet.manifest_file = "base.pp"
-       puppet.module_path = "modules"
+       puppet.module_path = "modules"	    
+	   puppet.options = ['--verbose']
   end
 
 end
